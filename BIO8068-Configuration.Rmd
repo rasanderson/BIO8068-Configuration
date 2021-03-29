@@ -127,7 +127,7 @@ library(keras)
 
 If this works OK, the next step is to install the connections to Python:
 
-```{r}
+```{r, eval=FALSE}
 install_keras()
 ```
 
