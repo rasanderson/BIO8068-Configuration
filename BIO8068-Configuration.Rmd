@@ -1,0 +1,16 @@
+---
+title: "BIO8068 Data Visualisaton in Ecology"
+subtitle: "Initial setup and configuration"
+output:
+  word_document:
+    reference_docx: word_template.docx
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+

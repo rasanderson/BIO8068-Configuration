@@ -37,3 +37,6 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+BIO8068-Configuration.docx
+BIO8068-Configuration.html
