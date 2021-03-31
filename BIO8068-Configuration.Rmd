@@ -206,6 +206,7 @@ There are a lot of R packages used in this module, and I will admit that I am no
 library(ggplot2)
 library(dplyr)
 library(lubridate)
+library(warbleR)
 library(sp)
 library(sf)
 library(raster)
