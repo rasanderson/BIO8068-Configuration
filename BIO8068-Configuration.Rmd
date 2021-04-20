@@ -2,9 +2,9 @@
 title: "BIO8068 Data Visualisaton in Ecology"
 subtitle: "Initial setup and configuration"
 output:
+  html_document: default
   word_document:
     reference_docx: word_template.docx
-  html_document: default
   pdf_document: default
 ---
 
@@ -67,7 +67,7 @@ If you find that you do not have `git` installed, you can access the main downlo
 ![](images/git_downloads.png)
 
 ## 2.1 `git` on MacOS
-If you are using a MacBook, `git` should already be pre-installed. You can check by click on the Launchpad button and opening a terminal:
+If you are using a MacBook, `git` **should already be pre-installed**. You can check by click on the Launchpad button and opening a terminal:
 
 ![](images/click_launchpad.png)
 
@@ -75,7 +75,7 @@ and then type Terminal:
 
 ![](images/terminal_from_launchpad.png)
 
-The Terminal app should open in its own window. Type `which git` and hit the Enter key, and it should report something like `/usr/local/bin/git`. You can then check its version with `git --version`. In the unlikely event that it is not installed, you need the Xcode developer tools available via the main git downloads page (above) or from the Apple website <https://developer.apple.com/xcode/>. The actual download link is near the bottom of the webpage. After you have installed Xcode, open up your Terminal window and enter:
+The Terminal app should open in its own window. Type `which git` and hit the Enter key, and it should report something like `/usr/local/bin/git`. You can then check its version with `git --version`. I would also recommend that you do some general searches on your MacBook to see if you can find git anywhere. In the unlikely event that it is not installed, you will need to install it separately. You may have a software installation system already configured for your MacBook, in which case use that to install git. Alternatively, use the Xcode developer tools available via the main git downloads page (above) or from the official Apple website <https://developer.apple.com/xcode/>. The actual download link is near the bottom of the webpage. **Note** You might already have Xcode installed! After you have installed Xcode, open up your Terminal window and enter:
 
 ```{r, eval=FALSE}
 git --version
@@ -109,8 +109,10 @@ You will use a couple of R packages that access external packages written in Pyt
 * 3. Check that R can connect via `keras` to Python
 
 ## 3.1 Install Python
+You will not actually do any coding in Python. However, some of the R packages you will use call Python as a backend. Unfortunately there are lots of different versions of Python, and you may have multiple versions available on one machine. Ironically, it is possible for R to fail to spot any of these versions.
+
 ### 3.1.1 MacOS
-Python should be pre-installed on MacOS, but you will need to check that you have recent versions. Open up a MacOS Terminal window (see above) and enter `python --version` and `python3 --version`. It should confirm that you have both Python 2 and Python 3 available. In the unlikely event that it is missing, go to <https://www.python.org/downloads/release/python-392/> to download the most recent Python 3 version for MacOS.
+Python should be pre-installed on MacOS, but you will need to check that you have recent versions. Open up a MacOS Terminal window (see above) and enter `python --version` and `python3 --version`. It should confirm that you have both Python 2 and Python 3 available. In the unlikely event that it is missing, go to <https://www.python.org/downloads/release/python-392/> to download the most recent Python 3 version for MacOS. See also comment in section 3.3 below about MacOS Big Sur.
 
 ### 3.1.2 Windows
 Several 'flavours' of Python are available for Windows. You need to use the Anaconda distribution, which can be downloaded from <https://www.anaconda.com/products/individual>. The download link is near the bottom of the page. After you have downloaded the installation file, double-click on it to install; again you will probably need your Administrator password. **Warning** The Anaconda package is large at almost 500 Mb, so make sure you have a good internet connection before attempting to download.
@@ -118,7 +120,7 @@ Several 'flavours' of Python are available for Windows. You need to use the Anac
 ## 3.2 Install the R `keras` package
 This connects R to Python, and after installation automatically installs extra Python utilities. We will cover this in more detail at the relevant practical, but it will be useful to resolve any configuration problems as early as possible. If we are unable to resolve these problems, it is possible to use `keras` via the Windows Virtual Desktop service.
 
-Start-up RStudio and in the command line type:
+Start-up RStudio and in the command line type the following lines. **Note** If at any point you receive a message along the lines "Do you want to install Miniconda" then answer Yes. Miniconda is a stripped-down minimal version of Python that works with R.
 
 ```{r, eval=FALSE}
 install.packages("keras")
@@ -149,6 +151,20 @@ Ignore any warning messages about `h5py is running against HDF5 1.10.2 when buil
 ```{r}
 detach("package:keras", unload = TRUE)
 ```
+
+## 3.3 Troubleshooting the `keras` installation on MacOS
+A common area that can go wrong is with the Tensorflow Python libraries that Keras uses. If you are using a MacOS computer with High Sierra then it should be possible to install Keras successfully. If you have the most recent MacOS Big Sur update, that came out in autumn 2020, there are known problems with Tensorflow. First try in a Terminal window typing:
+
+`pip3 install tensorflow`
+
+If this does not work, have a look at the official MacOS installation guidelines at <https://github.com/apple/tensorflow_macos>. We can also try helping troubleshoot at the first workshop. As a fallback solution, you can run Keras on the RStudio version on the NUIT Windows Virtual Desktop (WVD) system, although this will be considerably slower than a MacBook. If you have problems installing Keras on the WVD then sometimes a manual installation of the R `reticulate` package can help:
+
+`install.packages("reticulate")`
+`library(reticulate)`
+`conda_list() # Does R detect any Python environments?`
+`conda_install("r-reticulate") # Installs a Python virtual environment` 
+
+If you receive errors in the `conda_install()` step, you may have to clean up a faulty Miniconda installation. In the Terminal window `conda clean --all` should do this. If using Windows you might receive a message that `conda cannot be found`. We can help troubleshoot this message.
 
 # 4. R packages for Citizen Science wildlife databases
 You will make use of several Citizen Science databases, in particular the Global Biodiversity Information Facility (GBIF), iNaturalist and National Biodiversity Network Atlas sites. These have R packages to access them, but the latter is in development, and not available on CRAN in the usual manner. Check that they install successfully:
@@ -217,6 +233,7 @@ library(xts)
 library(zoo)
 library(shinipsum) # optional
 library(camtrapR)  # optional
+library(imager)    # optional
 ```
 
-If you get messages saying that R cannot find the package then please install it - all of these packages are on CRAN so can be installed in the normal manner. If any of them fail to install then please consult myself or one of the PGR demonstrators.
+If you get messages saying that R cannot find the package then we may have to download from source, although as all of these packages are on CRAN so can be installed in the normal manner. If any of them fail to install then please consult myself or one of the PGR demonstrators.
