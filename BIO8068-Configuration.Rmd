@@ -2,9 +2,9 @@
 title: "BIO8068 Data Visualisaton in Ecology"
 subtitle: "Initial setup and configuration"
 output:
+  html_document: default
   word_document:
     reference_docx: word_template.docx
-  html_document: default
   pdf_document: default
 ---
 
@@ -22,10 +22,10 @@ You will use a large number of R packages in this module, some of which you may 
 # 1. Compiling R packages
 To compile an R package from its source code differs between Windows and MacBooks, as Windows machines need an additional program called RTools40:
 
-## 1.1 Nereid Windows 10 cluster
+## 1.1 Compiling R packages: Nereid Windows 10 cluster
 Hopefully RTools40 will already be pre-configured and ready to go.
 
-## 1.2 Your own Windows 10 laptop
+## 1.2 Compiling R packages: your own Windows 10 laptop
 You will need Administrator rights in order to install RTools40; note that depending on your setup you may have to enter a different username or password, but on most Windows PCs the username for the main admin role is Administrator.  Go to:
 
 <https://cran.r-project.org/bin/windows/Rtools/>
@@ -58,7 +58,7 @@ install.packages("jsonlite", type = "source")
 
 You should see lots of information printed to screen as it installs the package. It takes a little longer than the default method of `type = "binary"` that you are used to using.
 
-## 1.3 MacBooks
+## 1.3 Compiling R packages: MacBooks
 This should already have all the additional software already installed for you.
 
 # 2. Reproducible research; version control with `git` and GitHub
@@ -76,14 +76,14 @@ If you find that you do not have `git` installed, you can access the main downlo
 ### 2.2.1 Installing git in Neried Windows 10 cluster
 Several weeks prior to this module beginning I placed a support ticket with NUIT to install the git client in the Neried cluster, so hopefully nothing needs to be done.
 
-### 2.2.2 Installing `git` on a personal Windows 10 laptop
+### 2.2.2 Installing git on a personal Windows 10 laptop
 It is unlikely that you will already have `git` installed on Windows. If you want to check, start RStudio, then click on the "Terminal" tab, next to the RStudio Console tab at the bottom left. Try typing `git which` and hit the Enter key, followed by `git --version`; if you are lucky it will report that `git` is installed, and its version number. You are more likely to have to download and install the program. Go to the main git downloads page (above) and click the "Windows" option. The downloader should automatically detect which version of Windows you are using, and download the best version. It will probably again be saved into your Downloads folder. Double-click on it to install; again you will probably have to enter your Administrator password. Two key points for the installation process:
 
 * When asked about “Adjusting your PATH environment”, make sure to select “Git from the command line and also from 3rd-party software”. Otherwise, accept the defaults.
 * Note that RStudio for Windows prefers for Git to be installed below `C:/Program Files` and this appears to be the default. This implies, for example, that the Git executable on most Windows system is found at `C:/Program Files/Git/bin/git.exe`. My own laptop is managed by NUIT, so ironically, git is not in this location, but still works OK.
 
 
-### 2.2.3 `git` on MacOS
+### 2.2.3 git on MacOS
 If you are using a MacBook, `git` **should already be pre-installed**. You can check by click on the Launchpad button and opening a terminal:
 
 ![](images/click_launchpad.png)
@@ -101,8 +101,10 @@ git config
 
 Accept the offer and click on "Install" and everything should get configured.
 
+Sometimes MacOS displays the error  "xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun". Follow the instructions from the top rated comment on this link and it should fix the error: <https://stackoverflow.com/questions/52522565/git-is-not-working-after-macos-update-xcrun-error-invalid-active-developer-pa>
 
-## 2.3 Configuring `git`
+
+## 2.3 Configuring git before use
 Before you can use `git` it needs to have a basic configuration, so it knows who you are. You can do this now, or during the relevant practical, where we cover this material again. In RStudio, start the RStudio Terminal window (**not** the RStudio Console) and type:
 
 ```{r, eval=FALSE}
@@ -117,11 +119,11 @@ subsituting your real name (not your login number) and Newcastle University emai
 # 3. Python, Keras and Tensorflow
 You will use a couple of R packages that access external packages written in Python. This is a very similar language to R, and popular for data analytics, deep learning and artificial intelligence. You do not need to have an understanding of how Python works to use the relevant R packages, but you will need a working version of Python. We will use an R package called `keras` which calls external Python packages (Keras and Tensorflow). Most Windows PCs do not come with Python pre-installed, whereas most MacBooks have it automatically.
 
-## 3.1 Windows 10 (Neried and personal Windows 10 laptops)
+## 3.1 Keras installation: Neried Cluster and personal Windows 10 laptops
 Configuration can be a little tricky, especially as we do not have administrator rights for the Nereid Cluster. I have therefore created an R script called `keras_setup.R` (available on Canvas). Please open this in RStudio, and process it line-by-line, checking for errors, and it should configure the software for you.
 
 
-### 3.2 MacOS
+### 3.2 Keras installation: MacOS
 Python should be pre-installed on MacOS, but you will need to check that you have recent versions. Open up a MacOS Terminal window (see above) and enter `python --version` and `python3 --version`. It should confirm that you have both Python 2 and Python 3 available. In the unlikely event that it is missing, go to <https://www.python.org/downloads/release/python-392/> to download the most recent Python 3 version for MacOS. See also comment in section 3.3 below about MacOS Big Sur.
 
 Start-up RStudio and in the command line type the following lines. **Note** If at any point you receive a message along the lines "Do you want to install Miniconda" then answer Yes. Miniconda is a stripped-down minimal version of Python that works with R.
@@ -144,13 +146,12 @@ mydata <- dataset_mnist()
 summary(mydata)
 ```
 
-
-## 3.3 Troubleshooting the `keras` installation on MacOS
+## 3.3 Troubleshooting Keras installation on MacOS
 A common area that can go wrong is with the Tensorflow Python libraries that Keras uses. If you are using a MacOS computer with High Sierra then it should be possible to install Keras successfully. If you have the most recent MacOS Big Sur update, there are reported problems with Tensorflow. First try in a Terminal window typing:
 
 `pip3 install tensorflow`
 
-If this does not work, have a look at the official MacOS installation guidelines at <https://github.com/apple/tensorflow_macos>. We can also try helping troubleshoot at the first workshop. As a fallback solution, you can run Keras on the RStudio version on the NUIT Windows Virtual Desktop (WVD) system, although this will be considerably slower than a MacBook. If you have problems installing Keras on the WVD then sometimes a manual installation of the R `reticulate` package can help:
+The official MacOS installation guidelines are at <https://github.com/apple/tensorflow_macos>. Within RStudio try and install the R `reticulate` separately, then conda:
 
 `install.packages("reticulate")`
 `library(reticulate)`
@@ -158,6 +159,8 @@ If this does not work, have a look at the official MacOS installation guidelines
 `conda_install("r-reticulate") # Installs a Python virtual environment` 
 
 If you receive errors in the `conda_install()` step, you may have to clean up a faulty Miniconda installation. In the Terminal window `conda clean --all` should do this. If using Windows you might receive a message that `conda cannot be found`. We can help troubleshoot this message.
+
+
 
 
 # 4. R packages for Citizen Science wildlife databases
