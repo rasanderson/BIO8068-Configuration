@@ -2,9 +2,9 @@
 title: "BIO8068 Data Visualisaton in Ecology"
 subtitle: "Initial setup and configuration"
 output:
-  html_document: default
   word_document:
     reference_docx: word_template.docx
+  html_document: default
   pdf_document: default
 ---
 
@@ -123,7 +123,7 @@ You will use a couple of R packages that access external packages written in Pyt
 Configuration can be a little tricky, especially as we do not have administrator rights for the Nereid Cluster. I have therefore created an R script called `keras_setup.R` (available on Canvas). Please open this in RStudio, and process it line-by-line, checking for errors, and it should configure the software for you.
 
 
-### 3.2 Keras installation: MacOS
+## 3.2 Keras installation: MacOS
 Python should be pre-installed on MacOS, but you will need to check that you have recent versions. Open up a MacOS Terminal window (see above) and enter `python --version` and `python3 --version`. It should confirm that you have both Python 2 and Python 3 available. In the unlikely event that it is missing, go to <https://www.python.org/downloads/release/python-392/> to download the most recent Python 3 version for MacOS. See also comment in section 3.3 below about MacOS Big Sur.
 
 Start-up RStudio and in the command line type the following lines. **Note** If at any point you receive a message along the lines "Do you want to install Miniconda" then answer Yes. Miniconda is a stripped-down minimal version of Python that works with R.
@@ -153,14 +153,35 @@ A common area that can go wrong is with the Tensorflow Python libraries that Ker
 
 The official MacOS installation guidelines are at <https://github.com/apple/tensorflow_macos>. Within RStudio try and install the R `reticulate` separately, then conda:
 
-`install.packages("reticulate")`
-`library(reticulate)`
-`conda_list() # Does R detect any Python environments?`
-`conda_install("r-reticulate") # Installs a Python virtual environment` 
+```{r, eval=FALSE}
+install.packages("reticulate")
+library(reticulate)
+conda_list() # Does R detect any Python environments?
+conda_install("r-reticulate") # Installs a Python virtual environment
+```
 
 If you receive errors in the `conda_install()` step, you may have to clean up a faulty Miniconda installation. In the Terminal window `conda clean --all` should do this. If using Windows you might receive a message that `conda cannot be found`. We can help troubleshoot this message.
 
+Sometimes **MacOS Big Sur** also has additional problems with Keras. You might find this works:
 
+```{r, eval=FALSE}
+install.packages("keras")
+install.packages("reticulate")
+conda_install("r-reticulate", python_version=3.8, packages="keras")
+conda_list()
+```
+
+The last function will probably return two conda environments. Copy the path including the double-quotes to the r-reticulate version, which will probably be something like `"/Users/<yourname>/opt/...."` Then enter:
+
+`Sys.setenv(RETICULATE_PYTHON = "PATH")` # Replace PATH with the info you copied above.
+
+Exit from RStudio completely, and restart it. In the RStudio Console type:
+
+```{r, eval=FALSE}
+library(keras)
+# install_keras() # Omit this initially. If the next line fails, try again 
+mydata <- dataset_mnist() # Ignore warnings about cudart etc.
+```
 
 
 # 4. R packages for Citizen Science wildlife databases
